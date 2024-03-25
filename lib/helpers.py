@@ -68,28 +68,65 @@ def delete_department():
 # You'll implement the employee functions in the lab
 
 def list_employees():
-    pass
+    employee = Employee.get_all()
+    for employee in employee:
+        print(employee)
 
 
 def find_employee_by_name():
-    pass
+    name = Employee.find_by_name(name)
+    print(name) if name else print(f"Employee {name} was not found")
 
 
 def find_employee_by_id():
-    pass
+    id_ = Employee.find_by_id(id_)
+    print(id_) if id_ else print(f"Employee {id_} was not found.")
 
 
 def create_employee():
-    pass
+    name = input("Enter employee's name: ")
+    job_title = input("Enter employee's job title: ")
+    department_id = input("Enter employee's department id: ")
+    try:
+        employee = Employee.create(name, job_title, department_id)
+        print(f"Success {employee} was created.")
+    except Exception as exc:
+        print("Error, employee could not be created:", exc)
 
 
 def update_employee():
-    pass
+    id_ = input("Enter employee's id: ")
+    if employee := Employee.find_by_id(id_):
+        try:
+            name = input("Enter employee's name: ")
+            employee.name = name
+            job_title = input("Enter employee's job title: ")
+            employee.job_title = job_title
+            department_id = input("Enter employee's department id: ")
+            employee.department_id = department_id
+            employee.update()
+            print(f"Success {employee} was updated.")
+        except Exception as exc:
+            print("Error could not update employee:", exc)
+
 
 
 def delete_employee():
-    pass
+    id_ = input("Enter employee's id: ")
+    if employee := Employee.find_by_id(id_):
+        employee.delete()
+        print(f"Employee {id_} was deleted.")
+    else:
+        print(f"Employee {id_} was not found")
 
 
 def list_department_employees():
-    pass
+    from models.department import Department
+    from models.employee import Employee
+    department_id = input("Enter department's id: ")
+    if department := Department.find_by_id(department_id):
+        employees = department.employees()
+        for emp in employees:
+            print(emp)
+    else:
+        print(f"Department {department_id} not found.")
